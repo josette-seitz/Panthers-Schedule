@@ -8,18 +8,18 @@ import panthers            from './panthers.png';
 
 class Home extends Component {
   state = {
-    opponents: []
+    events: []
   };
 
   componentDidMount() {
 
-    fetch('api/opponents')
+    fetch('api/events')
       .then(response => response.json())
-      .then(data => this.setState({opponents: data}));
+      .then(data => this.setState({events: data}));
   }
 
   render() {
-    const {opponents} = this.state;
+    const {events} = this.state;
 
     return (
       <div>
@@ -30,16 +30,16 @@ class Home extends Component {
             <h1 className="App-title">Welcome to the 2018-2019 Season</h1>
           </header>
           <Container fluid>
-            <Button outline color="primary" tag={Link} to={'/opponents'}>
+            <Button outline color="primary" tag={Link} to={'/events'}>
               Carolina Panthers Schedule
             </Button>
           </Container>
           <br/>
           <div className="App-intro">
             <h2>Regular Season Opponents</h2>
-            {opponents.map(team =>
-              <div key={team.id}>
-                {team.name} at {team.stadium}
+            {events.map(event =>
+              <div key={event.id}>
+                {event.opponent.name} at {event.stadium}
               </div>
             )}
           </div>

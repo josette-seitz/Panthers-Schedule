@@ -27,62 +27,56 @@ class Initializer implements CommandLineRunner {
         //Build Opponent
         Opponent opponent1 = Opponent.builder()
                 .name("Cowboys")
-                .stadium("Bank of America Stadium")
-                .city("Charlotte")
-                .state("NC")
                 .build();
         opponentRepository.save(opponent1);
 
         Opponent opponent2 = Opponent.builder()
                 .name("Falcons")
-                .stadium("Mercedes-Benz Stadium")
-                .city("Atlanta")
-                .state("GA")
                 .build();
         opponentRepository.save(opponent2);
 
         Opponent opponent3 = Opponent.builder()
                 .name("Bengals")
-                .stadium("Bank of America Stadium")
-                .city("Charlotte")
-                .state("NC")
                 .build();
         opponentRepository.save(opponent3);
 
-        //Find Opponent
-        Opponent o1 = opponentRepository.findByName("Cowboys");
-        Opponent o2 = opponentRepository.findByName("Falcons");
-        Opponent o3 = opponentRepository.findByName("Bengals");
-
         //Build Event details tied to Opponent
         Event event1 = Event.builder()
-                .date(LocalDateTime.of(2018, Month.SEPTEMBER, 9, 4, 30, 0))
+                .eventDate(LocalDateTime.of(2018, Month.SEPTEMBER, 9, 16, 30, 0))
+                .stadium("Bank of America Stadium")
+                .city("Charlotte")
+                .state("NC")
                 .score("8 - 16")
                 .winner("Panthers")
-                .opponentId(opponent1.getId())
+                .opponent(opponent1)
                 .build();
-        o1.setEvent(event1);
-        opponentRepository.save(o1);
+        eventRepository.save(event1);
 
         Event event2 = Event.builder()
-                .date(LocalDateTime.of(2018, Month.SEPTEMBER, 16, 1, 0, 0))
+                .eventDate(LocalDateTime.of(2018, Month.SEPTEMBER, 16, 13, 0, 0))
+                .stadium("Mercedes-Benz Stadium")
+                .city("Atlanta")
+                .state("GA")
                 .score("24 - 31")
                 .winner("Falcons")
-                .opponentId(opponent2.getId())
+                .opponent(opponent2)
                 .build();
-        o2.setEvent(event2);
-        opponentRepository.save(o2);
+        eventRepository.save(event2);
 
         Event event3 = Event.builder()
-                .date(LocalDateTime.of(2018, Month.SEPTEMBER, 23, 1, 0, 0))
+                .eventDate(LocalDateTime.of(2018, Month.SEPTEMBER, 23, 13, 0, 0))
+                .stadium("Bank of America Stadium")
+                .city("Charlotte")
+                .state("NC")
                 .score("21 - 31")
                 .winner("Panthers")
-                .opponentId(opponent3.getId())
+                .opponent(opponent3)
                 .build();
-        o3.setEvent(event3);
-        opponentRepository.save(o3);
+        eventRepository.save(event3);
 
         //Check for console purposes
+        //        opponentRepository.findAll().forEach(System.out::println);
+        eventRepository.findAll().forEach(System.out::println);
         opponentRepository.findAll().forEach(System.out::println);
     }
 }
