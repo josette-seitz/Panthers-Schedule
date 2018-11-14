@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +24,6 @@ class EventController {
     private final Logger log = LoggerFactory.getLogger(EventController.class);
     private OpponentRepository opponentRepository;
     private EventRepository eventRepository;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public EventController(OpponentRepository opponentRepository, EventRepository eventRepository) {
         this.opponentRepository = opponentRepository;
@@ -49,6 +47,7 @@ class EventController {
     //Create new Event
     @PostMapping("/event")
     ResponseEntity<Event> createEvent(@Valid @RequestBody EventAdd eventAdd) throws URISyntaxException {
+        log.info("POST HERE");
         Opponent oEntity = Opponent.builder()
                 .name(eventAdd.getName())
                 .build();
@@ -57,7 +56,7 @@ class EventController {
         Event eEntity = Event.builder()
                 .stadium(eventAdd.getStadium())
                 .city(eventAdd.getCity())
-                .eventDate(LocalDateTime.parse((eventAdd.getEventDate())))
+                .eventDate(formatDate(eventAdd.getEventDate()))
                 .opponent(opponent)
                 .state(eventAdd.getState())
                 .build();
@@ -71,6 +70,7 @@ class EventController {
     //Update Event by ID
     @PutMapping("/event/{id}")
     ResponseEntity<Event> updateEvent(@PathVariable Long id, @Valid @RequestBody Event event) {
+        log.info("PUT HERE");
         event.setId(id);
         log.info("Request to update event: {}", event);
         Event result = eventRepository.save(event);
@@ -83,5 +83,9 @@ class EventController {
         log.info("Request to delete group: {}", id);
         eventRepository.deleteById(id);
         return ResponseEntity.ok().build();
+    }
+
+    private LocalDateTime formatDate(String eventDate) {
+        return (eventDate.equals("")) ? null : LocalDateTime.parse(eventDate);
     }
 }

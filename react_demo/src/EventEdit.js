@@ -10,16 +10,15 @@ class EventEdit extends Component {
     stadium: '',
     city: '',
     state: '',
-    eventDate: ''
-    // ,
-    // score: '',
-    // winner: ''
+    eventDate: '',
+    score: '',
+    winner: ''
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      item: this.emptyItem
+      item: this.emptyItem, isHidden: true
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -28,7 +27,7 @@ class EventEdit extends Component {
   async componentDidMount() {
     if (this.props.match.params.id !== 'new') {
       const event = await (await fetch(`/api/event/${this.props.match.params.id}`)).json();
-      this.setState({item: event});
+      this.setState({item: event, isHidden: false});
     }
   }
 
@@ -57,8 +56,9 @@ class EventEdit extends Component {
   }
 
   render() {
-    const {item} = this.state;
+    const item = this.state.item;
     const title = <h2>{item.id ? 'Edit Game' : 'Add Game'}</h2>;
+    const hide = this.state.isHidden ? {display: 'none'} : {};
 
     return <div>
       <AppNavbar/>
@@ -90,6 +90,16 @@ class EventEdit extends Component {
               <Label for="eventDate">Date & Time</Label>
               <Input type="datetime-local" name="eventDate" id="eventDate" value={item.eventDate || ''}
                      onChange={this.handleChange} autoComplete="eventDate"/>
+            </FormGroup>
+            <FormGroup className="col-md-4 mb-3" style={hide}>
+              <Label for="score">Score</Label>
+              <Input type="text" name="score" id="score" value={item.score || ''}
+                     onChange={this.handleChange} autoComplete="score"/>
+            </FormGroup>
+            <FormGroup className="col-md-4 mb-3" style={hide}>
+              <Label for="winner">Winner</Label>
+              <Input type="text" name="winner" id="winner" value={item.winner || ''}
+                     onChange={this.handleChange} autoComplete="score"/>
             </FormGroup>
           </div>
           <FormGroup>
