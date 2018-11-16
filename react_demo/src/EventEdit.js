@@ -26,6 +26,7 @@ class EventEdit extends Component {
 
   async componentDidMount() {
     if (this.props.match.params.id !== 'new') {
+      //GET /event/{id} json
       const event = await (await fetch(`/api/event/${this.props.match.params.id}`)).json();
       this.setState({item: event, isHidden: false});
     }
@@ -44,6 +45,7 @@ class EventEdit extends Component {
     event.preventDefault();
     const {item} = this.state;
 
+    //On Submit- PUT /event/{id} OR POST /event
     await fetch('/api/event', {
       method: (item.id) ? 'PUT' : 'POST',
       headers: {
@@ -51,7 +53,9 @@ class EventEdit extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(item)
+
     });
+
     this.props.history.push('/events');
   }
 
